@@ -35,15 +35,6 @@ STRATEGIES_SEQUENCE = [
         min_available_clients=4,
         proximal_mu=0.1,
     ),
-    FedAdagrad(
-        fraction_fit=0.1,
-        fraction_evaluate=0.1,
-        min_fit_clients=2,
-        min_evaluate_clients=2,
-        min_available_clients=4,
-        learning_rate_initial=0.01,
-        l2_regularization=0.001,
-    ),
     FedAdam(
         fraction_fit=0.1,
         fraction_evaluate=0.1,
@@ -154,18 +145,6 @@ class StrategyCycler(Strategy):
             print(f"\n---------- Switching to Strategy: {type(self.current_strategy).__name__} ----------\n")
 
 
-def weighted_average(metrics: List[Tuple[int, Dict[str, Scalar]]]) -> Dict[str, Scalar]:
-    """Aggregation function for weighted average metrics."""
-    totals = sum([num_examples for num_examples, _ in metrics])
-    if totals == 0:
-        return {}
-    weighted_metrics: Dict[str, Scalar] = {}
-    for num_examples, metric in metrics:
-        for key, val in metric.items():
-            weighted_metrics[key] = weighted_metrics.get(key, 0.0) + val * num_examples
-    return {key: val / totals for key, val in weighted_metrics.items()}
-
-
 def plot_accuracy(accuracy_history: List[Dict]):
     """Plotting function to visualize accuracy vs rounds for each strategy."""
     strategy_names = set(item['strategy'] for item in accuracy_history)
@@ -191,11 +170,11 @@ def main():
 
     server_config = ServerConfig(num_rounds=len(STRATEGIES_SEQUENCE) * ROUNDS_PER_STRATEGY)
 
-    history = fl.server.start_server(  # Capture the History object (not directly used here but could be)
+    history = fl.server.start_server(  
         server_address="0.0.0.0:8080",
         config=server_config,
         strategy=strategy_cycler,
-        # metrics_aggregation_fn=weighted_average, # Uncomment if you are using custom metrics
+        grpc_max_message_length = 1024 * 1024 * 1024,
     )
 
     plot_accuracy(strategy_cycler.accuracy_history) # Plot accuracy after server finishes

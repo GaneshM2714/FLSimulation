@@ -5,6 +5,7 @@ from tensorflow import keras
 from typing import Tuple, Dict, Optional
 from flwr.common import Parameters, Scalar
 from numpy import ndarray
+from keras.models import load_model
 import numpy as np
 
 class ImageClassifierClient(fl.client.NumPyClient):
@@ -68,20 +69,10 @@ class ImageClassifierClient(fl.client.NumPyClient):
         )
 
 
-def create_model(input_shape, num_classes):
-    """Creates a simple CNN model for image classification."""
-    model = keras.Sequential([
-        keras.layers.Conv2D(32, (3, 3), activation='relu', input_shape=input_shape),
-        keras.layers.MaxPooling2D((2, 2)),
-        keras.layers.Conv2D(64, (3, 3), activation='relu'),
-        keras.layers.MaxPooling2D((2, 2)),
-        keras.layers.Flatten(),
-        keras.layers.Dense(100, activation='relu'),
-        keras.layers.Dense(num_classes, activation='softmax') # num_classes output units
-    ])
-    model.compile(optimizer='adam',
-                  loss='categorical_crossentropy', # For multi-class classification
-                  metrics=['accuracy'])
+def get_model(model_path):
+    """Load a pre-trained model for image classification."""
+    
+    model = load_model(model_path)
     return model
 
 
@@ -131,13 +122,12 @@ def main():
     )
 
     # --- Model Creation ---
-    input_shape = (image_size[0], image_size[1], 3)
-    num_classes = len(train_generator.class_indices) 
-    model = create_model(input_shape, num_classes)
+    model_path = '/home/ganesh/Paper_Onkar/VGG19/VGG19_1.keras'
+    model = get_model(model_path)
 
     # --- Flower Client ---
     client = client_fn(train_generator, test_generator, model)
-    fl.client.start_numpy_client(server_address="0.0.0.0:8080", client=client)
+    fl.client.start_numpy_client(server_address="0.0.0.0:8080", client=client, grpc_max_message_length = 1024 * 1024 * 1024)
 
 
 if __name__ == "__main__":
