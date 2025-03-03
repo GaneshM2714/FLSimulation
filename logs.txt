@@ -1,0 +1,43 @@
+Found class directories: ['glioma_tumor', 'meningioma_tumor', 'no_tumor', 'pituitary_tumor']
+
+Class: glioma_tumor
+  Total files in class: 1208
+  Files per client (approximate): 241
+  Remainder files to distribute: 3
+  Client 1 (client1): 242 files in class 'glioma_tumor'
+  Client 2 (client2): 242 files in class 'glioma_tumor'
+  Client 3 (client3): 242 files in class 'glioma_tumor'
+  Client 4 (client4): 241 files in class 'glioma_tumor'
+  Client 5 (client5): 241 files in class 'glioma_tumor'
+
+Class: meningioma_tumor
+  Total files in class: 930
+  Files per client (approximate): 186
+  Remainder files to distribute: 0
+  Client 1 (client1): 186 files in class 'meningioma_tumor'
+  Client 2 (client2): 186 files in class 'meningioma_tumor'
+  Client 3 (client3): 186 files in class 'meningioma_tumor'
+  Client 4 (client4): 186 files in class 'meningioma_tumor'
+  Client 5 (client5): 186 files in class 'meningioma_tumor'
+
+Class: no_tumor
+  Total files in class: 831
+  Files per client (approximate): 166
+  Remainder files to distribute: 1
+  Client 1 (client1): 167 files in class 'no_tumor'
+  Client 2 (client2): 166 files in class 'no_tumor'
+  Client 3 (client3): 166 files in class 'no_tumor'
+  Client 4 (client4): 166 files in class 'no_tumor'
+  Client 5 (client5): 166 files in class 'no_tumor'
+
+Class: pituitary_tumor
+  Total files in class: 992
+  Files per client (approximate): 198
+  Remainder files to distribute: 2
+  Client 1 (client1): 199 files in class 'pituitary_tumor'
+  Client 2 (client2): 199 files in class 'pituitary_tumor'
+  Client 3 (client3): 198 files in class 'pituitary_tumor'
+  Client 4 (client4): 198 files in class 'pituitary_tumor'
+  Client 5 (client5): 198 files in class 'pituitary_tumor'
+
+Multi-class dataset divided IID manner into '/home/ganesh/Projects/MyFiles/BrainTumorClassificationGPU/Clients' for 5 clients.
